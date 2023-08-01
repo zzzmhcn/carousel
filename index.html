@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播图demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        .carousel {
+            max-width: 800px;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel .control {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel .control .next, .carousel .control .prev {
+            position: absolute;
+            top: calc(50% - 2rem);
+            cursor: pointer;
+            user-select: none;
+            background: rgba(66, 66, 66, .66);
+            border-radius: 50%;
+            padding: 6px 8px 4px;
+        }
+
+        .carousel .control .next {
+            right: 1rem;
+        }
+
+        .carousel .control .prev {
+            left: 1rem;
+        }
+
+        .carousel img {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            transition: transform .5s ease;
+        }
+    </style>
+</head>
+<body>
+<div class="carousel">
+    <img src="img/1.webp">
+    <img src="img/2.webp">
+    <img src="img/3.webp">
+    <img src="img/4.webp">
+    <img src="img/5.webp">
+</div>
+
+<script>
+    function init() {
+        const carousel = document.querySelector('.carousel');
+        const size = carousel.querySelectorAll('img').length;
+
+        const prevImage = function () {
+            const index = Number(carousel.getAttribute('index')) < 1 ? size - 1 : Number(carousel.getAttribute('index')) - 1;
+            carousel.setAttribute('index', String(index));
+            document.querySelectorAll('.carousel img').forEach(img => {
+                img.style.transform = 'translateX(' + (index * -100) + '%)';
+            });
+        };
+
+        const nextImage = function () {
+            const index = Number(carousel.getAttribute('index')) >= size - 1 ? 0 : Number(carousel.getAttribute('index')) + 1;
+            carousel.setAttribute('index', String(index));
+            document.querySelectorAll('.carousel img').forEach(img => {
+                img.style.transform = 'translateX(' + (index * -100) + '%)';
+            })
+        };
+
+        const control = document.createElement('div');
+        control.className = 'control';
+        const prev = document.createElement('div');
+        prev.className = 'prev';
+        prev.innerHTML = '<svg t="1690880358537" viewBox="0 0 1024 1024" p-id="2638" width="24" height="24"><path style="fill: whitesmoke;" d="M659.748571 245.272381l-51.687619-51.687619-318.439619 318.585905 318.415238 318.268952 51.712-51.736381-266.703238-266.556952z" p-id="2639"></path></svg>';
+        const next = document.createElement('div');
+        next.className = 'next';
+        next.innerHTML = '<svg t="1690880498698" viewBox="0 0 1024 1024" p-id="2777" width="24" height="24"><path style="fill: whitesmoke;" d="M605.086476 512.146286L338.358857 245.272381l51.760762-51.687619 318.415238 318.585905L390.095238 830.415238l-51.687619-51.736381z" p-id="2778"></path></svg>';
+        control.appendChild(prev);
+        control.appendChild(next);
+        prev.addEventListener('click', prevImage);
+        next.addEventListener('click', nextImage);
+        carousel.appendChild(control);
+        carousel.setAttribute('index', '0');
+    }
+
+    window.onload = function () {
+        init();
+    };
+</script>
+</body>
+</html>
